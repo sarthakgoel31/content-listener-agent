@@ -8,6 +8,7 @@ reading experience on Kindle is excellent.
 
 import argparse
 import mimetypes
+import os
 import re
 import smtplib
 import subprocess
@@ -18,8 +19,15 @@ from email.mime.text import MIMEText
 from pathlib import Path
 from shutil import which
 
-GMAIL_ADDRESS = "sarthak.goel01@gmail.com"
-KINDLE_EMAIL = "REDACTED"
+GMAIL_ADDRESS = os.environ.get("GMAIL_ADDRESS", "")
+KINDLE_EMAIL = os.environ.get("KINDLE_EMAIL", "")
+
+if not GMAIL_ADDRESS or not KINDLE_EMAIL:
+    raise ValueError(
+        "GMAIL_ADDRESS and KINDLE_EMAIL environment variables must be set. "
+        "Example: export GMAIL_ADDRESS='you@gmail.com' KINDLE_EMAIL='you@kindle.com'"
+    )
+
 KEYCHAIN_SERVICE = "kindle-agent-gmail"
 KEYCHAIN_ACCOUNT = GMAIL_ADDRESS
 
